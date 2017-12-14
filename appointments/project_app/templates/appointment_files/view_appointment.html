@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Appointments Viewer</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<style type="text/css">
+	.container1 {
+		border: solid;
+	}
+</style>
+<body>
+	<div class="container">
+	<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">Appointment Details</h1>
+    </div>
+</div>
+<div class="container1">
+	
+<table class="table">
+ <!--  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead> -->
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+      <td><b>First Name</b></td>
+      <td>{{appointments.first_name}}</td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td><b>Last Name</b></td>
+      <td>{{appointments.last_name}}</td>
+      
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td><b>Email</b></td>
+      <td>{{appointments.email}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>Title</b></td>
+      <td>{{appointments.appointment_title}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>Description</b></td>
+      <td>{{appointments.appointment_description}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>Time</b></td>
+      <td>{{appointments.time_field}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>Date</b></td>
+      <td>{{appointments.date_field}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>Address</b></td>
+      <td>{{appointments.address}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>City</b></td>
+      <td>{{appointments.state}}</td>
+      
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><b>State</b></td>
+      <td>{{appointments.city}}</td>
+      
+    </tr>
+
+      <tr>
+      <th scope="row"></th>
+      <td><b>Zip</b></td>
+      <td>{{appointments.zip_code}}</td>
+      
+    </tr>
+
+
+      <tr>
+      <th scope="row"></th>
+      <td><b>Phone</b></td>
+      <td>{{appointments.phone}}</td>
+      
+    </tr>
+
+      <tr>
+      <th scope="row"></th>
+      <td><b>Notes</b></td>
+      <td>{{appointments.notes}}</td>
+      
+    </tr>
+
+  </tbody>
+</table>
+ 
+
+</div>
+<a class="btn btn-primary btn-md" href="view" role="button">Back</a>
+</body>
+</html>

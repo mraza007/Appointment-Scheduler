@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>New Appointment</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+	<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">View Appointments</h1>
+    </div>
+</div>
+	<div class="container">
+    <form method="POST" class="post-form form-group">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Add Appointment</button>
+    </form>
+    <a class="btn btn-primary btn-md" href="view" role="button">View Other Appointments</a>
+    </div>
+</body>
+</html>

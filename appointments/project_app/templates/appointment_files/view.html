@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>View Appointment</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<style type="text/css">
+	.display-3{
+		text-align: center;
+	}
+</style>
+<body>
+	<div class="container">
+	<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">View Appointments</h1>
+    </div>
+</div>
+	
+	<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+   {%for appointments in data %}
+   <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ appointments.first_name }}</td>
+      <td>{{ appointments.last_name}}</td>
+      <td>{{ appointments.email }}</td>
+      <td><a class="btn btn-primary btn-md" href="{% url 'appointmentsdetail' appointments.id%}" role="button">View</a></td>
+    </tr>
+    {%endfor%}
+  </tbody>
+ 
+</table>
+<a class="btn btn-primary btn-md" href="/" role="button">Back To Homepage</a>
+</body>
+</html>
+
