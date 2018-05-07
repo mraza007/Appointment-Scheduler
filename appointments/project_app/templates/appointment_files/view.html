@@ -25,6 +25,7 @@
       <th>Last Name</th>
       <th>Email</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -36,6 +37,7 @@
       <td>{{ appointments.last_name}}</td>
       <td>{{ appointments.email }}</td>
       <td><a class="btn btn-primary btn-md" href="{% url 'appointmentsdetail' appointments.id%}" role="button">View</a></td>
+      <td><a class="btn btn-danger btn-md" href="{% url 'appoint_remove' appointments.id%}" role="button">Delete</a></td>
     </tr>
     {%endfor%}
   </tbody>

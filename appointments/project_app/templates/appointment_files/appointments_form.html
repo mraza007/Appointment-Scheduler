@@ -8,15 +8,29 @@
 <div class="container">
 	<div class="jumbotron jumbotron-fluid">
   <div class="container">
-    <h1 class="display-3">View Appointments</h1>
+    <h1 class="display-3">Create Appointment</h1>
     </div>
 </div>
+<!-- </div>
 	<div class="container">
     <form method="POST" class="post-form form-group">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Add Appointment</button>
     </form>
     <a class="btn btn-primary btn-md" href="view" role="button">View Other Appointments</a>
-    </div>
+    </div> -->
+    <div class="container">
+    {% load bootstrap3 %}
+    <form action="" method="post" class="form-group col-md-6">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Submit
+        </button>
+    {% endbuttons %}
+</form>
+</div>
+
 </body>
 </html>

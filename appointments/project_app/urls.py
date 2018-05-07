@@ -9,5 +9,6 @@ urlpatterns = [
 		url(r'view/$',views.view,name='view'),
 		url(r'appointmentsdetail/(?P<pk>\d+)$',views.appointmentsdetail.as_view() ,name='appointmentsdetail'),
 		url(r'^post/new/$', views.post_new, name='post_new'),
+		url(r'^view/(?P<pk>\d+)/remove/$', views.appoint_remove, name='appoint_remove'),
 
 ]

@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import DetailView
 from .forms import appointmentForm
 from django.shortcuts import redirect
+from django.shortcuts import get_list_or_404, get_object_or_404
 
 
 
@@ -16,16 +17,11 @@ class appointmentsdetail(DetailView):
 	template_name = 'appointment_files/view_appointment.html'
 	model = appointments
     
-
+def appoint_remove(request, pk):
+    appointments_model = get_object_or_404(appointments, pk=pk)
+    appointments_model.delete()
+    return redirect('view')
   
-
-
-
-
-
-
-
-
 def index(request):
 	return render(request, 'appointment_files/index.html')
 
@@ -52,34 +48,6 @@ def post_new(request):
 	  
 
 
-	   # form = appointmentForm(request.POST)
-   	#    post = form.save(commit=False)
-   	#    post.save()
-    #    return redirect('appointmentsdetail', pk=post.pk)
-   
-
-# def appointmentsviewer(request):
-# 	data = appointments.objects.only("last_name")
-# 	return TemplateResponse(request, 'appointment_files/view_appointment.html' , {"data":data})
-
-# class detailedview(generic.DetailView):
-# 	model = appointments
-# 	template = 'appointment_files/view_appointment.html'
-
-# class indexview(generic.ListView):
-# 		model = appointments
-# 		template = 'appointment_files/view.html'
-# 		context_object_name = 'all_appointments'
-# 		def get_queryset(self):
-# 			return appointments.objects.all()
-
-
-
-# class indexview(generic.ListView):
-# 		template = 'appointment_files/view.html'
-# 		context_object_name = 'data'
-# 		def get_queryset(self):
-# 			return appointments.objects.all()
 
 
 
