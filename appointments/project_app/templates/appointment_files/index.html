@@ -1,27 +1,95 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Appointments</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-	<style type="text/css">
-		h1 {padding-left: 100px;
-			padding-top: 50px;
-			}
-		.container{ padding-top: 40px; }
-	</style>
-</head>
-<body>
-<div class="container">
-<div class="jumbotron">
-  <h1 class="display-1">Appointment's App</h1>
-  <p class="lead">A simple Web App that lets you create appointments</p>
-  <hr class="my-4">
-  <p>Click The Button to Begin !</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-md" href="{% url 'post_new' %}" role="button">Create an Appointment</a>
-    <a class="btn btn-primary btn-md" href="view" role="button">View Other Appointments</a>
-  </p>
+{% extends 'appointment_files/base.html' %}
+
+{% block title %}Home - Appointments App{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-white">
+    <h1 class="display-4">
+        <i class="fas fa-calendar-check text-primary"></i> Appointment's App
+    </h1>
+    <p class="lead">A simple web app that lets you create and manage appointments efficiently.</p>
+    <hr class="my-4">
+
+    {% if user.is_authenticated %}
+    <p>Welcome back, <strong>{{ user.first_name|default:user.username }}</strong>! What would you like to do today?</p>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-plus-circle fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Create Appointment</h5>
+                    <p class="card-text">Schedule a new appointment with all the details.</p>
+                    <a href="{% url 'post_new' %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Create New
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-list fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">View Appointments</h5>
+                    <p class="card-text">Browse, search, and manage your existing appointments.</p>
+                    <a href="{% url 'view' %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i> View All
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Calendar View</h5>
+                    <p class="card-text">See your appointments in a monthly calendar format.</p>
+                    <a href="{% url 'calendar' %}" class="btn btn-info">
+                        <i class="fas fa-calendar"></i> Open Calendar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Please log in or register to start managing your appointments.</p>
+    <a class="btn btn-primary btn-lg mr-2" href="{% url 'login' %}" role="button">
+        <i class="fas fa-sign-in-alt"></i> Login
+    </a>
+    <a class="btn btn-outline-primary btn-lg" href="{% url 'register' %}" role="button">
+        <i class="fas fa-user-plus"></i> Register
+    </a>
+    <hr class="my-4">
+    <p class="text-muted">Or browse existing appointments without an account:</p>
+    <a class="btn btn-secondary" href="{% url 'view' %}" role="button">
+        <i class="fas fa-eye"></i> View Appointments
+    </a>
+    {% endif %}
 </div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-clock text-warning"></i> Easy Scheduling</h5>
+                <p class="card-text">Quickly create appointments with date, time, and location details.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-search text-info"></i> Smart Search</h5>
+                <p class="card-text">Find appointments easily with our powerful search and filter options.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-bell text-danger"></i> Status Tracking</h5>
+                <p class="card-text">Track appointment status: pending, confirmed, completed, or cancelled.</p>
+            </div>
+        </div>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}

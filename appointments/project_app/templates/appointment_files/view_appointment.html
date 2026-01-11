@@ -1,126 +1,168 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Appointments Viewer</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-</head>
-<style type="text/css">
-	.container1 {
-		border: solid;
-	}
-</style>
-<body>
-	<div class="container">
-	<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-3">Appointment Details</h1>
+{% extends 'appointment_files/base.html' %}
+
+{% block title %}{{ appointments.appointment_title }} - Appointment Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-calendar-check"></i> {{ appointments.appointment_title }}
+                </h4>
+                <span class="badge badge-{{ appointments.status }} badge-pill">
+                    {{ appointments.get_status_display }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-3">Contact Information</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <td><strong><i class="fas fa-user"></i> Name:</strong></td>
+                                <td>{{ appointments.first_name }} {{ appointments.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong><i class="fas fa-envelope"></i> Email:</strong></td>
+                                <td>
+                                    {% if appointments.email %}
+                                    <a href="mailto:{{ appointments.email }}">{{ appointments.email }}</a>
+                                    {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong><i class="fas fa-phone"></i> Phone:</strong></td>
+                                <td>
+                                    {% if appointments.phone %}
+                                    <a href="tel:{{ appointments.phone }}">{{ appointments.phone }}</a>
+                                    {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-3">Schedule</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <td><strong><i class="fas fa-calendar"></i> Date:</strong></td>
+                                <td>
+                                    {% if appointments.date_field %}
+                                    {{ appointments.date_field|date:"F d, Y" }}
+                                    {% else %}
+                                    <span class="text-muted">Not set</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong><i class="fas fa-clock"></i> Time:</strong></td>
+                                <td>
+                                    {% if appointments.time_field %}
+                                    {{ appointments.time_field|time:"g:i A" }}
+                                    {% else %}
+                                    <span class="text-muted">Not set</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h6 class="text-muted mb-3">Description</h6>
+                <p>{{ appointments.appointment_description|default:"No description provided."|linebreaks }}</p>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-3">Location</h6>
+                        <address>
+                            {% if appointments.address %}
+                            {{ appointments.address }}<br>
+                            {% endif %}
+                            {% if appointments.city or appointments.state %}
+                            {{ appointments.city }}{% if appointments.city and appointments.state %}, {% endif %}{{ appointments.state }}
+                            {% if appointments.zip_code %} {{ appointments.zip_code }}{% endif %}<br>
+                            {% endif %}
+                            {% if not appointments.address and not appointments.city and not appointments.state %}
+                            <span class="text-muted">No location provided</span>
+                            {% endif %}
+                        </address>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-3">Notes</h6>
+                        <p>{{ appointments.notes|default:"No additional notes."|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'view' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                    {% if user.is_authenticated %}
+                    <div>
+                        <a href="{% url 'appointment_edit' appointments.pk %}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'appoint_remove' appointments.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        {% if user.is_authenticated %}
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-tasks"></i> Update Status</h6>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'update_status' appointments.pk %}" id="statusForm">
+                    {% csrf_token %}
+                    <select name="status" class="form-control mb-2" id="statusSelect">
+                        <option value="pending" {% if appointments.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="confirmed" {% if appointments.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                        <option value="completed" {% if appointments.status == 'completed' %}selected{% endif %}>Completed</option>
+                        <option value="cancelled" {% if appointments.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-save"></i> Update Status
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-info-circle"></i> Quick Info</h6>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Status</span>
+                    <span class="badge badge-{{ appointments.status }}">{{ appointments.get_status_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Created</span>
+                    <span>{{ appointments.created_at|date:"M d, Y" }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Last Updated</span>
+                    <span>{{ appointments.updated_at|date:"M d, Y" }}</span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
-<div class="container1">
-	
-<table class="table">
- <!--  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead> -->
-  <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td><b>First Name</b></td>
-      <td>{{appointments.first_name}}</td>
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td><b>Last Name</b></td>
-      <td>{{appointments.last_name}}</td>
-      
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td><b>Email</b></td>
-      <td>{{appointments.email}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>Title</b></td>
-      <td>{{appointments.appointment_title}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>Description</b></td>
-      <td>{{appointments.appointment_description}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>Time</b></td>
-      <td>{{appointments.time_field}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>Date</b></td>
-      <td>{{appointments.date_field}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>Address</b></td>
-      <td>{{appointments.address}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>City</b></td>
-      <td>{{appointments.state}}</td>
-      
-    </tr>
-
-    <tr>
-      <th scope="row"></th>
-      <td><b>State</b></td>
-      <td>{{appointments.city}}</td>
-      
-    </tr>
-
-      <tr>
-      <th scope="row"></th>
-      <td><b>Zip</b></td>
-      <td>{{appointments.zip_code}}</td>
-      
-    </tr>
-
-
-      <tr>
-      <th scope="row"></th>
-      <td><b>Phone</b></td>
-      <td>{{appointments.phone}}</td>
-      
-    </tr>
-
-      <tr>
-      <th scope="row"></th>
-      <td><b>Notes</b></td>
-      <td>{{appointments.notes}}</td>
-      
-    </tr>
-
-  </tbody>
-</table>
- 
-
-</div>
-<a class="btn btn-primary btn-md" href="view" role="button">Back</a>
-</body>
-</html>
+{% endblock %}
